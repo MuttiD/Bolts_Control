@@ -12,8 +12,15 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('bolts_control')
 
-wip = SHEET.worksheet('WIP')
+def get_wip_user():
+    """
+    Get the work-in-progress data of bolts from user 
+    """
+    print("Please provide WIP data from today's work: ")
+    print("Data should be six numbers, separated by commas.")
+    print("Example: 21,23,10,54,20,36")
 
-data = wip.get_all_values()
+    data_str = input("Enter your WIP here: ")
+    print(f"The data provided is {data_str}")
 
-print(data)
+get_wip_user()
