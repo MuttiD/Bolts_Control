@@ -14,13 +14,35 @@ SHEET = GSPREAD_CLIENT.open('bolts_control')
 
 def get_wip_user():
     """
-    Get the work-in-progress data of bolts from user 
+    Get the work-in-progress data of bolts from user
     """
     print("Please provide WIP data from today's work: ")
     print("Data should be six numbers, separated by commas.")
     print("Example: 21,23,10,54,20,36")
 
     data_str = input("Enter your WIP here: ")
-    print(f"The data provided is {data_str}")
+    wip_data = data_str.split(",")
+    validate_data(wip_data)
+
+    #print(f"The data provided is {data_str}")
+
+def validate_data(values):
+    """
+    This function will convert all string values into integers.
+    Raising ValueError if strings cannot be converted into it,
+    or if there aren't exactly six values
+    """
+    print(values)
+    try:
+        [int(value) for value in values]            # this will convert any string in values' list
+        if len(values) != 6:
+            raise ValueError(
+                f"It is required 6 values, you have provided {len(values)}"
+            )
+    except ValueError as e:
+        print(f"Invalid data: {e}, please try again.\n")
 
 get_wip_user()
+
+
+
