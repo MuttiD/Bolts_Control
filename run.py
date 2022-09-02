@@ -64,7 +64,7 @@ def update_wip_worksheet(wip):
     print("WIP worksheet updated successfully.\n")
 
 
-def calculate_inventory_data(wip):
+def calculate_inventory_data(wip_row):
     """
     The inventory is defined as the work-in-progress less the scrapped bolts.
     - positive scrap are bolts being left to recover
@@ -72,8 +72,16 @@ def calculate_inventory_data(wip):
     """
     print("Calculating inventory....\n")
     scrap = SHEET.worksheet("scrap").get_all_values()
-    scrap_row = scrap[-1]                       # -1 denotes last row in the sheet
-    print(scrap_row)
+    scrap_row = scrap[-1]                       # -1 last row in the sheet
+    
+    inventory_data = []
+
+    for scrap, wip in zip(scrap_row, wip_row):
+        inventory = wip - int(scrap)
+        inventory_data.append(inventory)
+    
+    return inventory_data
+
 
 def main():
     """
@@ -82,7 +90,8 @@ def main():
     wip = get_wip_user()
     wip_data = [int(num) for num in wip]
     update_wip_worksheet((wip_data))
-    calculate_inventory_data(wip_data)
+    new_inventory_data = calculate_inventory_data(wip_data)
+    print(new_inventory_data)
 
 
 print("")
