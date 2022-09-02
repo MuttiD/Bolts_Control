@@ -16,15 +16,20 @@ def get_wip_user():
     """
     Get the work-in-progress data of bolts from user
     """
-    print("Please provide WIP data from today's work: ")
-    print("Data should be six numbers, separated by commas.")
-    print("Example: 21,23,10,54,20,36")
+    while True:   
+        print("Please provide WIP data from today's work: ")
+        print("Data should be six numbers, separated by commas.")
+        print("Example: 21,23,10,54,20,36")
 
-    data_str = input("Enter your WIP here: ")
-    wip_data = data_str.split(",")
-    validate_data(wip_data)
+        data_str = input("Enter your WIP here: ")
+        wip_data = data_str.split(",")
+        
+        if validate_data(wip_data):
+            print("This data is valid! Thank you")
 
-    #print(f"The data provided is {data_str}")
+            break 
+
+    return wip_data
 
 def validate_data(values):
     """
@@ -41,8 +46,11 @@ def validate_data(values):
             )
     except ValueError as e:
         print(f"Invalid data: {e}, please try again.\n")
+        return False
+    
+    return True
 
-get_wip_user()
+wip = get_wip_user()
 
 
 
