@@ -1,5 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
+from pprint import pprint
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -14,7 +15,7 @@ SHEET = GSPREAD_CLIENT.open('bolts_control')
 
 def get_wip_user():
     """
-    Get the work-in-progress data of bolts from user
+    Get the work-in-progress data of super bolts from user
     Add a while loop to collect a valid string of data from the user
     via the ternminal, that must be a string of 6 integer numbers separated
     by commas. The loop will keep repeating til it gets the correct set of numbers
@@ -63,8 +64,28 @@ def update_wip_worksheet(wip):
     print("WIP worksheet updated successfully.\n")
 
 
-wip = get_wip_user()
-wip_data = [int(num) for num in wip]
-update_wip_worksheet((wip_data))
+def calculate_inventory_data(wip):
+    """
+    The inventory is defined as the work-in-progress less the scrapped bolts.
+    - positive scrap are bolts being left to recover
+    - negative scrap are bolts recovered
+    """
+    print("Calculating inventory....\n")
+    scrap = SHEET.worksheet("scrap").get_all_values()
+    scrap_row = scrap[-1]                       # -1 denotes last row in the sheet
+    print(scrap_row)
 
+def main():
+    """
+    Running all program functions
+    """
+    wip = get_wip_user()
+    wip_data = [int(num) for num in wip]
+    update_wip_worksheet((wip_data))
+    calculate_inventory_data(wip_data)
+
+
+print("")
+print("       **** Welcome to the Bolts Control Programm **** \n")
+main()
 
