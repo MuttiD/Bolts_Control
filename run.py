@@ -54,25 +54,15 @@ def validate_data(values):
     
     return True
 
-def update_wip_worksheet(wip):
+def update_worksheet(wip, worksheet):
     """
-    Update WIP worksheet, add new row with the list data provided
+    This function will receives a list of integers (WIP)
+    And it will update the relevant worksheet with the data provided
     """
-    print("Updating wip worksheet...\n")
-    wip_worksheet = SHEET.worksheet("WIP")
-    wip_worksheet.append_row(wip)
-    print("WIP worksheet updated successfully.\n")
-
-
-def update_inventory_worksheet(wip):
-    """
-    Update Inventory worksheet, add new row with the list data provided
-    """
-    print("Updating inventory worksheet...\n")
-    inventory_worksheet = SHEET.worksheet("inventory")
-    inventory_worksheet.append_row(wip)
-    print("Inventory worksheet updated successfully.\n")
-
+    print(f"Updating {worksheet} worksheet...\n")
+    worksheet_to_update = SHEET.worksheet(worksheet)
+    worksheet_to_update.append_row(wip)
+    print(f"{worksheet} worksheet updated successfully.\n")
 
 
 def calculate_inventory_data(wip_row):
@@ -100,9 +90,9 @@ def main():
     """
     wip = get_wip_user()
     wip_data = [int(num) for num in wip]
-    update_wip_worksheet((wip_data))
+    update_worksheet(wip_data, "WIP")
     new_inventory_data = calculate_inventory_data(wip_data)
-    update_inventory_worksheet(new_inventory_data)
+    update_worksheet(new_inventory_data, "inventory")
     
 
 
