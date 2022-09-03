@@ -64,6 +64,17 @@ def update_wip_worksheet(wip):
     print("WIP worksheet updated successfully.\n")
 
 
+def update_inventory_worksheet(wip):
+    """
+    Update Inventory worksheet, add new row with the list data provided
+    """
+    print("Updating inventory worksheet...\n")
+    inventory_worksheet = SHEET.worksheet("inventory")
+    inventory_worksheet.append_row(wip)
+    print("Inventory worksheet updated successfully.\n")
+
+
+
 def calculate_inventory_data(wip_row):
     """
     The inventory is defined as the work-in-progress less the scrapped bolts.
@@ -91,7 +102,8 @@ def main():
     wip_data = [int(num) for num in wip]
     update_wip_worksheet((wip_data))
     new_inventory_data = calculate_inventory_data(wip_data)
-    print(new_inventory_data)
+    update_inventory_worksheet(new_inventory_data)
+    
 
 
 print("")
