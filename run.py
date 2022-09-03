@@ -30,6 +30,7 @@ def get_wip_scrap_user():
 
         data_str = input("Enter your WIP here: ")
         wip_data = data_str.split(",")
+        
 
         scrap_str = input("Enter the scrapped data here: ")
         scr_data = scrap_str.split(",")
@@ -37,10 +38,14 @@ def get_wip_scrap_user():
         
         if validate_data(wip_data) and validate_data(scr_data):
             print("Data provided is valid! Thank you")
+        
+            wip_data = [int(w) for w in wip_data]
+            scr_data = [int(s) for s in scr_data]  
+            
             break
 
-    return wip_data
-    return scr_data
+
+    return (wip_data, scr_data)
 
 def validate_data(values):
     """
@@ -59,27 +64,30 @@ def validate_data(values):
         print(f"Invalid data: {e}, please try again.\n")
         return False
     
+
     return True
 
-def update_worksheet(wip, worksheet):
+def update_worksheet(values, worksheet):
     """
-    This function will receives a list of integers (WIP)
+    This function will receives a list of integers (values)
     And it will update the relevant worksheet with the data provided
     """
     print(f"Updating {worksheet} worksheet...\n")
+    #print([type(x) for x in values])
+    
     worksheet_to_update = SHEET.worksheet(worksheet)
-    worksheet_to_update.append_row(wip)
+    worksheet_to_update.append_row(values)
     print(f"{worksheet} worksheet updated successfully.\n")
 
-def update_scrap_worksheet(scrap, worksheet):
-    """
-    This function will receives a list of integers from (scrap)
-    And it will update the relevant worksheet with the data provided
-    """
-    print(f"Updating {worksheet} worksheet...\n")
-    worksheet_to_update = SHEET.worksheet(worksheet)
-    worksheet_to_update.append_row(scrap)
-    print(f"{worksheet} worksheet updated successfully.\n")
+# def update_scrap_worksheet(scrap, worksheet):
+#     """
+#     This function will receives a list of integers from (scrap)
+#     And it will update the relevant worksheet with the data provided
+#     """
+#     print(f"Updating {worksheet} worksheet...\n")
+#     worksheet_to_update = SHEET.worksheet(worksheet)
+#     worksheet_to_update.append_row(scrap)
+#     print(f"{worksheet} worksheet updated successfully.\n")
 
 
 def calculate_inventory_data(wip_row):
@@ -110,18 +118,14 @@ def main():
     """
     wip = get_wip_scrap_user()
     
-    wip_data = [int(num) for num in wip]
-    scrap_data = [int(i) for i in wip]
+    wip_data = wip[0]
+    scrap_data = wip[1]
 
     update_worksheet(wip_data, "WIP")
-    update_scrap_worksheet(scrap_data, "scrap")
+    update_worksheet(scrap_data, "scrap")
 
     new_inventory_data = calculate_inventory_data(wip_data)
     update_worksheet(new_inventory_data, "inventory")
-
-    
-
-    
 
 
 print("")
