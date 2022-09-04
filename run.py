@@ -15,9 +15,9 @@ SHEET = GSPREAD_CLIENT.open('bolts_control')
 
 def get_wip_scrap_user():
     """
-    Get the work-in-progress data and srapped bolts from user
+    Get the work-in-progress data and srapped bolts data from user
     Add a while loop to collect a valid string of data from the user
-    via the ternminal, that must be a string of 6 integer numbers separated
+    via the ternminal, that must be 6 integer numbers separated
     by commas. The loop will keep repeating til it gets the
     correct set of numbers
     """
@@ -26,10 +26,10 @@ def get_wip_scrap_user():
         print("Data should be six numbers, separated by commas.")
         print("In the SCRAP data, please be aware that: ")
         print("   - Positive scrap means bolts refused")
-        print("   - Negative scrap means bolts repaired/recovered")
-        print("Example: 21,23,10,54,20,36")
+        print("   - Negative scrap means bolts repaired/recovered\n")
+        print("Example: 21,23,10,54,20,36\n")
 
-        data_str = input("Enter your WIP here: ")
+        data_str = input("Enter your WIP data here: ")
         wip_data = data_str.split(",")
 
         scrap_str = input("Enter the scrapped data here: ")
@@ -81,6 +81,7 @@ def update_worksheet(values, worksheet):
 def calculate_inventory_data(wip_row):
     """
     The inventory is defined as the work-in-progress less the scrapped bolts.
+    As a reminder:
     - positive scrap are bolts refused
     - negative scrap are bolts repaired/recovered
     """
@@ -95,9 +96,6 @@ def calculate_inventory_data(wip_row):
         inventory_data.append(inventory)
 
     return inventory_data
-
-    #for inventory_data < 1:
-    #     print(f"   *** Warning: {Column} is out of stock. Get more of these for tomorrow.")
 
 
 def main():
