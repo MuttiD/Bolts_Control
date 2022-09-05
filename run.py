@@ -22,7 +22,9 @@ def get_wip_scrap_user():
     correct set of numbers
     """
     while True:
-        print("Please provide WIP and SCRAP data from today's work. ")
+        print("""Please provide WIP and SCRAP data from today's work of 
+                 the following metric-sized bolts respectively:
+                 M10, M12, M16, M20, M24, M30""")
         print("Data should be six numbers, separated by commas.")
         print("In the SCRAP data, please be aware that: ")
         print("   - Positive scrap means bolts refused")
@@ -98,7 +100,7 @@ def calculate_inventory_data(wip_row):
     return inventory_data
 
 
-def main():
+def main(show, sheet):
     """
     Running all program functions
     """
@@ -113,6 +115,21 @@ def main():
     new_inventory_data = calculate_inventory_data(wip_data)
     update_worksheet(new_inventory_data, "inventory")
 
+    show = input("""Do you want to see calculated inventory? Press 'y'
+                    Otherwise press Enter to restart the app: """)
+    if show == "y":
+        worksheet_to_get = SHEET.worksheet(sheet)
+        list_of_dicts = worksheet_to_get.get_all_records()
+        print(f"""The calculated inventory data for each bolt are:
+
+             {list_of_dicts[-1]}\n""")
+    else:
+        main("n", "inventory")
+
+
+main("n", "inventory")
+
+
 print("")
 print("       **** Welcome to the Bolts Control Programm **** \n")
-main()
+main("n", "inventory")
